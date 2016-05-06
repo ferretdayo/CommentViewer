@@ -62,6 +62,8 @@ webApp.use(function(err, req, res, next) {
   });
 });
 
+const port = 3000;
+
 webApp.listen(port, function() {
   console.log('App server started : http://localhost:' + port);
 });

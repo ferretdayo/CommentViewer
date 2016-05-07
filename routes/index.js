@@ -20,6 +20,9 @@ router.post('/', function(req, res, next){
         nicolive.view(thread,function(error,viewer){
             if(error!=null) throw error;
             viewer.on('data',function(data){
+                //Socket.ioでクライアント側にコメント来たらemitしたい・・・
+                //まずsocketioとelectron共存できるんかいな・・・
+                
                 console.log(data);
             });
         });

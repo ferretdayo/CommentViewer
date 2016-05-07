@@ -6,13 +6,13 @@ block content
         div.row
             div.col.s12.m12.l12
                 h1(style='font-size:30px') ニコニココメントビュアー with Electron
-            form.col.s12.m12.l12
+            form.col.s12.m12.l12(method='post')
                 div.row
                     div.input-field.col.s12.m12.l12
-                        input#email(type='text', placeholder='email')
+                        input#email(type='text', placeholder='email', name='email')
                         label(for='email') メールアドレス
                     div.input-field.col.s12.m12.l12
-                        input#password(type='text', placeholder='password')
+                        input#password(type='password', placeholder='password', name='password')
                         label(for='password') パスワード
                     div.input-field.col.s12.m12.l12
                         button.waves-effect.wave-light.btn(type='submit', style='width:100%') ログイン

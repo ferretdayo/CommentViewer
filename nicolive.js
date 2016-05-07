@@ -47,6 +47,7 @@ module.exports = {
 
             //XMLのスクレイピング
             var $= cheerio.load(response.body);
+            console.log($('getplayerstatus ms port').text());
             //CallBack先に渡す値
             callback(null,{
                 port: $('getplayerstatus ms port').text(),

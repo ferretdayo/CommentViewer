@@ -31,8 +31,7 @@ router.post('/', function(req, res, next){
                 if(error!=null) throw error;
                 viewer.on('data',function(data){
                     console.log(data+"\n");
-                    //Socket.ioでクライアント側にコメント来たらemitしたい・・・
-                    //まずsocketioとelectron共存できるんかいな・・・
+                    //xmlをjsonに変換し，Viewにデータを送信
                     parser(data, function(err, result){
                         socket.emit('comment data', result);
                     });

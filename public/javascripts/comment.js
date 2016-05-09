@@ -1,6 +1,13 @@
 var socket = io.connect('http://localhost:3001');
 //var socket = new io.Socket('localhost');
 socket.connect();
+
+socket.on('broadcast data', function(data){
+    $('#owner_img').append($('<img id="owner_i" src="' + data.owner_img + '">'));
+    $('#owner_name').append($('<h4>' + data.owner_name + '</h4>'));
+    $('#broadcast_title').append($('<h5>' + data.title + '</h5>'));
+})
+
 socket.on('comment data', function(msg){
     //コメントデータを形成
     var commentData = dataAnalyze(msg);

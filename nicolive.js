@@ -9,7 +9,36 @@ var user_session = "";
 // Methods
 module.exports = {
     //ログイン処理
-    login: function(id,pw/*,callback*/){
+    login: function(email, pass, res){
+        request.post({
+            url: 'https://secure.nicovideo.jp/secure/login',
+            form: {
+                mail_tel: email,
+                password: pass,
+            },
+        },function(error,response){
+            //Rejectされた時
+            if(error!=null){
+                res.redirect(302, "/");
+            }
+            //Cookieからuser_sessionのデータを取得
+            var session= null;
+            var cookies= response.headers['set-cookie'] || [];
+            for(var i=0; i<cookies.length; i++){
+                var cookie= cookies[i];
+                if(cookie.match(/^user_session=user_session/)){
+                    session= cookie.slice(0,cookie.indexOf(';')+1);
+                }
+            }
+            //sessionがなかった場合
+            if(session==null){
+                res.redirect(302, "/");
+            }
+            //Cookieにユーザのセッション情報を保存
+            res.cookie('user_session', session);
+            res.redirect(302, "/viewer");
+        });
+    /*function(id,pw,callback){
         console.log("id: "+ id + ", pw: "+pw);
         request.post({
             url: 'https://secure.nicovideo.jp/secure/login',
@@ -34,7 +63,7 @@ module.exports = {
             user_session = session;
             return session;
             //callback(null,session);
-        });
+        });*/
     },
     fetchThread: function(live_id,session,callback){
         request({
@@ -52,6 +81,11 @@ module.exports = {
                 port: $('getplayerstatus ms port').text(),
                 addr: $('getplayerstatus ms addr').text(),
                 thread: $('getplayerstatus ms thread').text(),
+                broadcast_data : {
+                    title: $('getplayerstatus stream title').text(),
+                    owner_name: $('getplayerstatus stream owner_name').text(),
+                    owner_img: $('getplayerstatus stream thumb_url').text(),
+                },
             });
         });
     },

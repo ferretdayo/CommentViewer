@@ -3,22 +3,11 @@ var socket = io.connect('http://localhost:3001');
 socket.connect();
 
 socket.on('broadcast data', function(data){
-    if($('#owner_img')[0]){
-        console.log("deleteChildNodes");
-        $('#owner_img').empty();
-    }else{
-        console.log("aaaaa");
-    }
-    if($('#owner_name')[0]){
-        $('#owner_name').empty();
-    }
-    if($('#broadcast_title')[0]){
-        $('#broadcast_title').empty();
-    }
-    $('#owner_img').append($('<img id="owner_i" src="' + data.owner_img + '">'));
-    $('#owner_name').append($('<h4>' + data.owner_name + '</h4>'));
-    $('#broadcast_title').append($('<h5>' + data.title + '</h5>'));
-})
+    //放送タイトルや放送者の情報の初期化
+    broadcastTitleInit();
+    //放送タイトルや放送者の情報をコメビュに表示
+    setBroadcastTitle(data);
+});
 
 socket.on('comment data', function(msg){
     //コメントデータを形成
@@ -35,6 +24,28 @@ socket.on('disconnect', function(){
 $("#submit").click(function(){
     socket.emit('disconnect broadcast');
 })
+
+//放送情報を表示する前に毎回行う初期化
+function broadcastTitleInit(){
+    //#owner_imgにChildがあればChildを削除
+    if($('#owner_img')[0]){
+        $('#owner_img').empty();
+    }
+    if($('#owner_name')[0]){
+        $('#owner_name').empty();
+    }
+    if($('#broadcast_title')[0]){
+        $('#broadcast_title').empty();
+    }
+}
+
+//放送タイトルや放送者情報の表示
+function setBroadcastTitle(data){
+    //各IDに対するHTMLのChildに情報をappend
+    $('#owner_img').append($('<img id="owner_i" src="' + data.owner_img + '">'));
+    $('#owner_name').append($('<h4>' + data.owner_name + '</h4>'));
+    $('#broadcast_title').append($('<h5>' + data.title + '</h5>'));
+}
 
 //コメントデータから表示する為のデータを形成する。
 function dataAnalyze(data){

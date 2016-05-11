@@ -9,7 +9,7 @@ block content
                     div.col.s12.m10.l10
                         input#url(type="text", placeholder='放送URL', name="url")
                     div.col.s12.m2.l2
-                        input.waves-effect.waves-light.btn(type='submit', value="接続", id="submit")
+                        input#submit.waves-effect.waves-light.btn(type='submit', value="接続")
         div.row
             div.col.s2.m2.l2
                 div#owner_img
@@ -17,7 +17,12 @@ block content
                 div#owner_name
         div.row
             div.col.s12.m12.l12
-                div#broadcast_title                
+                div#broadcast_title  
+        div.row
+            div.col.s12.m10.l10
+                input#post_comment(type="text", placeholder="コメント", name="post_comment")
+            div.col.s12.m2.l2
+                button#comment_submit.waves-effect.waves-light.btn 送信
         //コメント欄
         div.row
             div.col.s12.m12.l12

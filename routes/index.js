@@ -52,6 +52,11 @@ router.post('/', function(req, res, next){
                 });
             });
         });
+        
+        //コメントを放送に投稿
+        socket.on('post comment', function(){
+            
+        });
     });
     res.render('index', { title: 'NicoNicoCommentViewer' });
 });

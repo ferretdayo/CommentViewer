@@ -23,8 +23,11 @@ socket.on('disconnect', function(){
 
 $("#submit").click(function(){
     socket.emit('disconnect broadcast');
-})
+});
 
+$('#comment_submit').click(function(){
+    socket.emit('post comment', $('#post_comment').val());
+});
 //放送情報を表示する前に毎回行う初期化
 function broadcastTitleInit(){
     //#owner_imgにChildがあればChildを削除

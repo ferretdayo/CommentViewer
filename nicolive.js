@@ -5,6 +5,7 @@ var readline = require('readline');
 var request= require('request');
 var cheerio= require('cheerio');
 var user_session = "";
+var broadcastDetail = {};
 // Methods
 module.exports = {
     //ログイン処理
@@ -49,11 +50,22 @@ module.exports = {
 
             //XMLのスクレイピング
             var $= cheerio.load(response.body);
+            //各情報をローカルに保存
+            broadcastDetail.thread = $('getplayerstatus ms thread').text();
+            broadcastDetail.port = $('getplayerstatus ms port').text();
+            broadcastDetail.addr = $('getplayerstatus ms addr').text();
+            /*
+            broadcastDetail.vpos = $('').text();
+            broadcastDetail.user_id = $('').text();
+            broadcastDetail.ticket = $('').text();
+            broadcastDetail.postkey = $('').text();
+            broadcastDetail.premium = $('').text();
+            */
             //CallBack先に渡す値
             callback(null,{
-                port: $('getplayerstatus ms port').text(),
-                addr: $('getplayerstatus ms addr').text(),
-                thread: $('getplayerstatus ms thread').text(),
+                port: broadcastDetail.port,
+                addr: broadcastDetail.addr,
+                thread: broadcastDetail.thread,
                 broadcast_data : {
                     title: $('getplayerstatus stream title').text(),
                     owner_name: $('getplayerstatus stream owner_name').text(),
@@ -71,4 +83,12 @@ module.exports = {
             callback(null,viewer);
         });
     },
+    postComment: function(port, address, thread, vpos, mail, user_id, premium){
+        var viewer= net.connect(port,address);
+        viewer.on('connect', function(){
+            viewer.setEncoding('utf-8');
+            viewer.write('<thread thread="'+thread.thread+'" res_from="-5" version="20061206" />\0');
+        });
+        viewer.write("<chat thread='" + + "' vpos='" +  + "' mail='" +  + "' ticket='" +  + "' user_id='" +  + "' postkey='" +  + "' premium='" +  + "'></chat>\0");
+    },    
 }

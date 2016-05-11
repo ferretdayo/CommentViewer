@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
 
+var net = require('net');
 var nicolive = require('../nicolive.js');
 var parser = require('xml2js').parseString;
 
@@ -8,7 +9,7 @@ var parser = require('xml2js').parseString;
 var app = require('express')();
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
-var preSocket = -1;
+var preViewer;
 /* GET home page. */
 router.get('/', function(req, res, next) {
     res.render('index', { title: 'NicoNicoCommentViewer' });
@@ -20,12 +21,13 @@ router.post('/', function(req, res, next){
     lv = lv[lv.length-1].split("?")[0];
     
     var user_session = req.cookies.user_session;
-    
+    if(preViewer != undefined){
+        //preViewer.end();
+    }
     //io.sockets[preSocket].disconnect();
     //Socket.ioに接続した時の処理
     io.on('connection', function(socket){
-        preSocket = socket.id;
-        console.log(preSocket);
+        
         //ニコニコのthreadとportとhost情報を取得
         nicolive.fetchThread(lv,user_session,function(error,thread){
             if(error!=null) throw error;
@@ -35,12 +37,18 @@ router.post('/', function(req, res, next){
                 if(error!=null) throw error;
                 //コメントサーバからデータを取得
                 viewer.on('data',function(data){
+                    preViewer = viewer;
                     console.log(data+"\n");
                     //xmlをjsonに変換し，Viewにデータを送信
                     parser(data, function(err, result){
                         //comment dataにJsonデータを送信(emit)
                         socket.emit('comment data', result);
+                        //viewer.end();
                     });
+                    //socket.on('disconnect broadcast', function(){
+                    //    console.log('disconnect');
+                          
+                    //})
                 });
             });
         });

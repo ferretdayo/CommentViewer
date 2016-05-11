@@ -4,7 +4,6 @@ var readline = require('readline');
 // Dependencies
 var request= require('request');
 var cheerio= require('cheerio');
-//var userdata = require('./niconico.js');
 var user_session = "";
 // Methods
 module.exports = {
@@ -38,32 +37,6 @@ module.exports = {
             res.cookie('user_session', session);
             res.redirect(302, "/viewer");
         });
-    /*function(id,pw,callback){
-        console.log("id: "+ id + ", pw: "+pw);
-        request.post({
-            url: 'https://secure.nicovideo.jp/secure/login',
-            form: {
-                mail_tel: id,
-                password: pw,
-            },
-        },function(error,response){
-            if(error!=null) return null;//callback(error);
-            
-            var session= null;
-            var cookies= response.headers['set-cookie'] || [];
-            console.log("cookie:"+cookie);
-            for(var i=0; i<cookies.length; i++){
-                var cookie= cookies[i];
-                if(cookie.match(/^user_session=user_session/)){
-                    session= cookie.slice(0,cookie.indexOf(';')+1);
-                }
-            }
-            if(session==null) return null;//callback(new Error('Invalid user'));
-            console.log("session: "+ session);
-            user_session = session;
-            return session;
-            //callback(null,session);
-        });*/
     },
     fetchThread: function(live_id,session,callback){
         request({

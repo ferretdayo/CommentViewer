@@ -3,6 +3,18 @@ var socket = io.connect('http://localhost:3001');
 socket.connect();
 
 socket.on('broadcast data', function(data){
+    if($('#owner_img')[0]){
+        console.log("deleteChildNodes");
+        $('#owner_img').empty();
+    }else{
+        console.log("aaaaa");
+    }
+    if($('#owner_name')[0]){
+        $('#owner_name').empty();
+    }
+    if($('#broadcast_title')[0]){
+        $('#broadcast_title').empty();
+    }
     $('#owner_img').append($('<img id="owner_i" src="' + data.owner_img + '">'));
     $('#owner_name').append($('<h4>' + data.owner_name + '</h4>'));
     $('#broadcast_title').append($('<h5>' + data.title + '</h5>'));
@@ -15,8 +27,13 @@ socket.on('comment data', function(msg){
         $('#comment').prepend($('<tr><td>' + commentData.user_id + '</td><td>' + commentData.comment + '</td><td>' + commentData.premium + '</td></tr>'));
     }
 });
+
 socket.on('disconnect', function(){
     console.log("放送終わりました");
+})
+
+$("#submit").click(function(){
+    socket.emit('disconnect broadcast');
 })
 
 //コメントデータから表示する為のデータを形成する。

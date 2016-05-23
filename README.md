@@ -1,4 +1,4 @@
-[![Build Status](https://secure.travis-ci.org/[ferretdayo]/[CommentViewer].png?branch=[master]](https://travis-ci.org/[ferretdayo]/[CommentViewer])
+[![Build Status](https://secure.travis-ci.org/ferretdayo/CommentViewer.png?branch=master](https://travis-ci.org/ferretdayo/CommentViewer)
 
 # 実行画面
 

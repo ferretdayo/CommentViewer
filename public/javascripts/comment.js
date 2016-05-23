@@ -1,3 +1,5 @@
+var broadcastDetail = {no: 0};
+
 var socket = io.connect('http://localhost:3001');
 //var socket = new io.Socket('localhost');
 socket.connect();
@@ -26,7 +28,8 @@ $("#submit").click(function(){
 });
 
 $('#comment_submit').click(function(){
-    socket.emit('post comment', $('#post_comment').val());
+    broadcastDetail.comment = $('#post_comment').val();
+    socket.emit('post comment', broadcastDetail);
 });
 //放送情報を表示する前に毎回行う初期化
 function broadcastTitleInit(){
@@ -55,7 +58,7 @@ function dataAnalyze(data){
     var commentData = {};
     //コメント情報の場合
     if(data.hasOwnProperty('chat')){
-        console.table(data);
+        console.table(data.chat);
         //ユーザIDの取得
         commentData.user_id = data.chat.$.user_id;
         //ユーザの種別
@@ -79,11 +82,13 @@ function dataAnalyze(data){
         commentData.comment = data.chat._;
         //コメントの番号
         commentData.no = data.chat.$.no;
+        broadcastDetail.no = data.chat.$.no;
         //コメントの日時
         commentData.date = createDateJST(data.chat.$.date);
         return commentData;        
-    }else{
-        console.table(data);
+    }else if(data.hasOwnProperty('thread')){
+        broadcastDetail.ticket = data.thread.$.ticket;
+        broadcastDetail.server_time = data.thread.$.server_time;
         return -1;
     }
 }

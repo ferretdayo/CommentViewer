@@ -54,13 +54,12 @@ module.exports = {
             broadcastDetail.thread = $('getplayerstatus ms thread').text();
             broadcastDetail.port = $('getplayerstatus ms port').text();
             broadcastDetail.addr = $('getplayerstatus ms addr').text();
-            /*
-            broadcastDetail.vpos = $('').text();
-            broadcastDetail.user_id = $('').text();
-            broadcastDetail.ticket = $('').text();
-            broadcastDetail.postkey = $('').text();
-            broadcastDetail.premium = $('').text();
-            */
+            //broadcastDetail.vpos = $('').text();
+            broadcastDetail.user_id = $('getplayerstatus user user_id').text();
+            //broadcastDetail.ticket = $('').text();
+            //broadcastDetail.postkey = $('').text();
+            broadcastDetail.premium = $('getplayerstatus user is_premium').text();
+            
             //CallBack先に渡す値
             callback(null,{
                 port: broadcastDetail.port,
@@ -83,12 +82,54 @@ module.exports = {
             callback(null,viewer);
         });
     },
-    postComment: function(port, address, thread, vpos, mail, user_id, premium){
-        var viewer= net.connect(port,address);
-        viewer.on('connect', function(){
-            viewer.setEncoding('utf-8');
-            viewer.write('<thread thread="'+thread.thread+'" res_from="-5" version="20061206" />\0');
+    /*
+    string ticket = "";
+    string server_time = "";
+    XmlDocument xdoc = new XmlDocument();
+    xdoc.LoadXml(line);
+    XmlElement root = xdoc.DocumentElement;
+    foreach (XmlAttribute attrib in root.Attributes)
+    {
+    if (attrib.Name == "ticket")
+    {
+        ticket = attrib.Value;
+    }
+    if (attrib.Name == "server_time")
+    {
+    server_time = attrib.Value;
+    }
+}
+if ((ticket == "") || (server_time == ""))
+{
+    return false;
+}
+//コメント処理開始時刻
+m_DateTimeStart = DateTime.Now;
+//vpos(放送経過時間[sec]*100)を算出
+//コメントサーバ開始時間
+Int64 serverTimeSpan = Int64.Parse(server_time) - Int64.Parse(m_base_time);
+//コメント投稿時間(1コメゲッターなのでここでは0secですね)
+Int64 localTimeSpan = GetUnixTime(DateTime.Now) - GetUnixTime(m_DateTimeStart);
+string vpos = ((serverTimeSpan + localTimeSpan) * 100).ToString();
+    */
+    postComment: function(commentdata){
+        //postkey取得
+        request({
+            url: "http://live.nicovideo.jp/api/getpostkey?thread=" + broadcastDetail.thread + "&block_no=" + (commentdata.no + 1)/100,
+        },function(error,response){
+            if(error!=null) return;
+            var postkey = response.body;
+            
+            var viewer= net.connect(port,address);
+            
+            viewer.on('connect', function(){
+                viewer.setEncoding('utf-8');
+                viewer.write('<thread thread="'+broadcastDetail.thread+'" res_from="-5" version="20061206" />\0');
+            });
+            
+            //コメントの投稿
+            viewer.write("<chat thread='" + broadcastDetail.thread + "' vpos='" +  + "' mail='" + commentdata.comment + "' ticket='" + commentdata.ticket + "' user_id='" + broadcastDetail.user_id + "' postkey='" +  + "' premium='" + broadcastDetail.premium + "'></chat>\0");
         });
-        viewer.write("<chat thread='" + + "' vpos='" +  + "' mail='" +  + "' ticket='" +  + "' user_id='" +  + "' postkey='" +  + "' premium='" +  + "'></chat>\0");
+        
     },    
 }

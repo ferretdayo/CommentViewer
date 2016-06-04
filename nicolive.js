@@ -69,7 +69,7 @@ module.exports = {
                     title: $('getplayerstatus stream title').text(),
                     owner_name: $('getplayerstatus stream owner_name').text(),
                     owner_img: $('getplayerstatus stream thumb_url').text(),
-                    comment_count: $('getplayerstatus stream comment_count').text(),
+                    comment_count: parseInt($('getplayerstatus stream comment_count').text())+1,
                 },
             });
         });

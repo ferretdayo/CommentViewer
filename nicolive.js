@@ -69,6 +69,7 @@ module.exports = {
                     title: $('getplayerstatus stream title').text(),
                     owner_name: $('getplayerstatus stream owner_name').text(),
                     owner_img: $('getplayerstatus stream thumb_url').text(),
+                    comment_count: $('getplayerstatus stream comment_count').text(),
                 },
             });
         });
@@ -113,14 +114,18 @@ Int64 localTimeSpan = GetUnixTime(DateTime.Now) - GetUnixTime(m_DateTimeStart);
 string vpos = ((serverTimeSpan + localTimeSpan) * 100).ToString();
     */
     postComment: function(commentdata){
+        console.log("comment_no: " + commentdata.no + "\n");
         //postkey取得
-        request({
-            url: "http://live.nicovideo.jp/api/getpostkey?thread=" + broadcastDetail.thread + "&block_no=" + (commentdata.no + 1)/100,
-        },function(error,response){
+        request(
+            "http://live.nicovideo.jp/api/getpostkey?thread=" + broadcastDetail.thread + "&block_no=" + (parseInt(commentdata.no) + 1)/100.0
+        ,function(error,response, body){
             if(error!=null) return;
             var postkey = response.body;
+            console.log("http://live.nicovideo.jp/api/getpostkey?thread=" + broadcastDetail.thread + "&block_no=" + (parseInt(commentdata.no) + 1)/100.0 + "\n");
+            console.log(postkey);
+            console.log(body);
             
-            var viewer= net.connect(port,address);
+            var viewer= net.connect(broadcastDetail.port,broadcastDetail.addr);
             
             viewer.on('connect', function(){
                 viewer.setEncoding('utf-8');

@@ -54,8 +54,8 @@ router.post('/', function(req, res, next){
         });
         
         //コメントを放送に投稿
-        socket.on('post comment', function(){
-            
+        socket.on('post comment', function(postCommentDetail){
+            nicolive.postComment(postCommentDetail);
         });
     });
     res.render('index', { title: 'NicoNicoCommentViewer' });

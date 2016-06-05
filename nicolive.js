@@ -40,6 +40,7 @@ module.exports = {
         });
     },
     fetchThread: function(live_id,session,callback){
+        broadcastDetail.session = session;
         request({
             url: 'http://live.nicovideo.jp/api/getplayerstatus/'+live_id,
             headers: {
@@ -116,14 +117,18 @@ string vpos = ((serverTimeSpan + localTimeSpan) * 100).ToString();
     postComment: function(commentdata){
         console.log("comment_no: " + commentdata.no + "\n");
         //postkey取得
-        request(
-            "http://live.nicovideo.jp/api/getpostkey?thread=" + broadcastDetail.thread + "&block_no=" + (parseInt(commentdata.no) + 1)/100.0
-        ,function(error,response, body){
+        request({
+            url: encodeURI('http://live.nicovideo.jp/api/getpostkey?thread=' + broadcastDetail.thread.replace(/(^\s+)|(\s+$)/g, "") + '\&block_no=' + (parseInt(commentdata.no) + 1)/100.0),
+            headers: {
+                Cookie: broadcastDetail.session,
+            }
+        },function(error,response, body){
             if(error!=null) return;
+            //postkey=ごにょにょ　を取得
             var postkey = response.body;
-            console.log("http://live.nicovideo.jp/api/getpostkey?thread=" + broadcastDetail.thread + "&block_no=" + (parseInt(commentdata.no) + 1)/100.0 + "\n");
+            //postkeyの値取得
+            postkey = postkey.split("=")[1];
             console.log(postkey);
-            console.log(body);
             
             var viewer= net.connect(broadcastDetail.port,broadcastDetail.addr);
             
@@ -133,7 +138,7 @@ string vpos = ((serverTimeSpan + localTimeSpan) * 100).ToString();
             });
             
             //コメントの投稿
-            viewer.write("<chat thread='" + broadcastDetail.thread + "' vpos='" +  + "' mail='" + commentdata.comment + "' ticket='" + commentdata.ticket + "' user_id='" + broadcastDetail.user_id + "' postkey='" +  + "' premium='" + broadcastDetail.premium + "'></chat>\0");
+            viewer.write("<chat thread='" + broadcastDetail.thread + "' vpos='" +  + "' mail='" + commentdata.comment + "' ticket='" + commentdata.ticket + "' user_id='" + broadcastDetail.user_id + "' postkey='" + postkey + "' premium='" + broadcastDetail.premium + "'></chat>\0");
         });
         
     },    

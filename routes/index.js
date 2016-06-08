@@ -19,7 +19,7 @@ router.post('/', function(req, res, next){
     console.log(broadcastUrl);
     var lv = broadcastUrl.split("/");
     lv = lv[lv.length-1].split("?")[0];
-    
+
     var user_session = req.cookies.user_session;
     if(preViewer != undefined){
         //preViewer.end();
@@ -27,7 +27,7 @@ router.post('/', function(req, res, next){
     //io.sockets[preSocket].disconnect();
     //Socket.ioに接続した時の処理
     io.on('connection', function(socket){
-        
+
         //ニコニコのthreadとportとhost情報を取得
         nicolive.fetchThread(lv,user_session,function(error,thread){
             if(error!=null) throw error;
@@ -47,12 +47,12 @@ router.post('/', function(req, res, next){
                     });
                     //socket.on('disconnect broadcast', function(){
                     //    console.log('disconnect');
-                          
+
                     //})
                 });
             });
         });
-        
+
         //コメントを放送に投稿
         socket.on('post comment', function(postCommentDetail){
             nicolive.postComment(postCommentDetail);

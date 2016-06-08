@@ -17,10 +17,10 @@ block content
                 div#owner_name
         div.row
             div.col.s12.m12.l12
-                div#broadcast_title  
+                div#broadcast_title
         div.row
             div.col.s12.m10.l10
-                input#post_comment(type="text", placeholder="コメント", name="post_comment")
+                input#post_comment(type="text", placeholder="コメント", name="post_comment", onkeydown="submitComment();")
             div.col.s12.m2.l2
                 button#comment_submit.waves-effect.waves-light.btn 送信
         //コメント欄
@@ -34,3 +34,4 @@ block content
                             th(data-field='premium', style="width:60px") Premium
                     tbody#comment(style="height:350px;overflow-y:scroll;overflow-x:hidden;display:block")
     script(type='text/javascript', src='/javascripts/comment.js')
+    script(type='text/javascript', src='/javascripts/ux.js')

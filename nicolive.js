@@ -39,6 +39,7 @@ module.exports = {
             res.redirect(302, "/viewer");
         });
     },
+    //XMLのスクレイピングからコメントサーバ接続用データ取得
     fetchThread: function(live_id,session,callback){
         broadcastDetail.session = session;
         request({
@@ -55,12 +56,11 @@ module.exports = {
             broadcastDetail.thread = $('getplayerstatus ms thread').text();
             broadcastDetail.port = $('getplayerstatus ms port').text();
             broadcastDetail.addr = $('getplayerstatus ms addr').text();
-            //broadcastDetail.vpos = $('').text();
             broadcastDetail.user_id = $('getplayerstatus user user_id').text();
-            //broadcastDetail.ticket = $('').text();
-            //broadcastDetail.postkey = $('').text();
             broadcastDetail.premium = $('getplayerstatus user is_premium').text();
-            
+            broadcastDetail.open_time = $('getplayerstatus stream open_time').text();
+            broadcastDetail.start_time = $('getplayerstatus stream start_time').text();
+
             //CallBack先に渡す値
             callback(null,{
                 port: broadcastDetail.port,
@@ -75,6 +75,7 @@ module.exports = {
             });
         });
     },
+    //コメントサーバに接続
     view: function(thread,callback){
         var viewer= net.connect(thread.port,thread.addr);
         viewer.on('connect', function(){
@@ -84,36 +85,7 @@ module.exports = {
             callback(null,viewer);
         });
     },
-    /*
-    string ticket = "";
-    string server_time = "";
-    XmlDocument xdoc = new XmlDocument();
-    xdoc.LoadXml(line);
-    XmlElement root = xdoc.DocumentElement;
-    foreach (XmlAttribute attrib in root.Attributes)
-    {
-    if (attrib.Name == "ticket")
-    {
-        ticket = attrib.Value;
-    }
-    if (attrib.Name == "server_time")
-    {
-    server_time = attrib.Value;
-    }
-}
-if ((ticket == "") || (server_time == ""))
-{
-    return false;
-}
-//コメント処理開始時刻
-m_DateTimeStart = DateTime.Now;
-//vpos(放送経過時間[sec]*100)を算出
-//コメントサーバ開始時間
-Int64 serverTimeSpan = Int64.Parse(server_time) - Int64.Parse(m_base_time);
-//コメント投稿時間(1コメゲッターなのでここでは0secですね)
-Int64 localTimeSpan = GetUnixTime(DateTime.Now) - GetUnixTime(m_DateTimeStart);
-string vpos = ((serverTimeSpan + localTimeSpan) * 100).ToString();
-    */
+    //コメントの投稿
     postComment: function(commentdata){
         console.log("comment_no: " + commentdata.no + "\n");
         //postkey取得
@@ -124,22 +96,29 @@ string vpos = ((serverTimeSpan + localTimeSpan) * 100).ToString();
             }
         },function(error,response, body){
             if(error!=null) return;
+
             //postkey=ごにょにょ　を取得
             var postkey = response.body;
             //postkeyの値取得
             postkey = postkey.split("=")[1];
             console.log(postkey);
-            
+
+            //vpos計算
+            var offsettime = parseInt(broadcastDetail.open_time) - parseInt(broadcastDetail.start_time);
+            var nowtime = new Date()/1000;
+            var vpos = parseInt(((nowtime - parseInt(broadcastDetail.start_time) + offsettime) * 100));
+
+            //コメントサーバに接続
             var viewer= net.connect(broadcastDetail.port,broadcastDetail.addr);
-            
+            //接続後はコメントを投稿する
             viewer.on('connect', function(){
                 viewer.setEncoding('utf-8');
-                viewer.write('<thread thread="'+broadcastDetail.thread+'" res_from="-5" version="20061206" />\0');
+                //コメントの投稿
+                viewer.write("<chat thread='" + broadcastDetail.thread + "' vpos='" + vpos + "' mail='" + commentdata.comment + "' ticket='" + commentdata.ticket + "' user_id='" + broadcastDetail.user_id + "' postkey='" + postkey + "' premium='" + broadcastDetail.premium + "'>" + commentdata.comment + "</chat>\0");
             });
-            
-            //コメントの投稿
-            viewer.write("<chat thread='" + broadcastDetail.thread + "' vpos='" +  + "' mail='" + commentdata.comment + "' ticket='" + commentdata.ticket + "' user_id='" + broadcastDetail.user_id + "' postkey='" + postkey + "' premium='" + broadcastDetail.premium + "'></chat>\0");
+
+
         });
-        
-    },    
+
+    },
 }

@@ -4,6 +4,7 @@ var socket = io.connect('http://localhost:3001');
 //var socket = new io.Socket('localhost');
 socket.connect();
 
+//放送タイトルや放送者情報を表示
 socket.on('broadcast data', function(data){
     //放送タイトルや放送者の情報の初期化
     broadcastTitleInit();
@@ -11,6 +12,7 @@ socket.on('broadcast data', function(data){
     setBroadcastTitle(data);
 });
 
+//コメントを取得して表示を行う
 socket.on('comment data', function(msg){
     //コメントデータを形成
     var commentData = dataAnalyze(msg);
@@ -27,8 +29,10 @@ $("#submit").click(function(){
     socket.emit('disconnect broadcast');
 });
 
+//コメントの投稿
 $('#comment_submit').click(function(){
     postCommentDetail.comment = $('#post_comment').val();
+    $('#post_comment').val("");
     socket.emit('post comment', postCommentDetail);
 });
 //放送情報を表示する前に毎回行う初期化
@@ -86,14 +90,14 @@ function dataAnalyze(data){
         postCommentDetail.no = data.chat.$.no;
         //コメントの日時
         commentData.date = createDateJST(data.chat.$.date);
-        return commentData;        
+        return commentData;
     }else if(data.hasOwnProperty('thread')){
         postCommentDetail.ticket = data.thread.$.ticket;
         postCommentDetail.server_time = data.thread.$.server_time;
         return -1;
     }
 }
-    
+
 //形成された日時を返却する関数
 function createDateJST(timestamp){
     var d = new Date(parseInt(timestamp)*1000);

@@ -19,7 +19,7 @@ router.get('/', function(req, res, next) {
     res.render('index', { title: 'NicoNicoCommentViewer' });
 });
 router.post('/', function(req, res, next){
-    var broadcastUrl = validator.escape(req.body.url);
+    var broadcastUrl = req.body.url;
     console.log(broadcastUrl);
     var lv = broadcastUrl.split("/");
     lv = lv[lv.length-1].split("?")[0];

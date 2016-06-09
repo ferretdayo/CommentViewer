@@ -20,8 +20,8 @@ router.get('/', function(req, res, next) {
 
 router.post('/', function(req, res, next){
     //Postデータの取得
-    var email = validator.escape(eq.body.email);
-    var pass = validator.escape(eq.body.password);
+    var email = validator.escape(req.body.email);
+    var pass = validator.escape(req.body.password);
     console.log(email);
     console.log(pass);
     //ログイン処理を行った後、render('viewer')

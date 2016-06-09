@@ -9,13 +9,17 @@ var parser = require('xml2js').parseString;
 var app = require('express')();
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
+
+//xss
+var validator = require('validator');
+
 var preViewer;
 /* GET home page. */
 router.get('/', function(req, res, next) {
     res.render('index', { title: 'NicoNicoCommentViewer' });
 });
 router.post('/', function(req, res, next){
-    var broadcastUrl = req.body.url;
+    var broadcastUrl = validator.escape(req.body.url);
     console.log(broadcastUrl);
     var lv = broadcastUrl.split("/");
     lv = lv[lv.length-1].split("?")[0];

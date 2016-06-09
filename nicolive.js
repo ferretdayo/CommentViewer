@@ -4,6 +4,10 @@ var readline = require('readline');
 // Dependencies
 var request= require('request');
 var cheerio= require('cheerio');
+
+//xss
+var validator = require('validator');
+
 var user_session = "";
 var broadcastDetail = {};
 // Methods
@@ -114,7 +118,7 @@ module.exports = {
             viewer.on('connect', function(){
                 viewer.setEncoding('utf-8');
                 //コメントの投稿
-                viewer.write("<chat thread='" + broadcastDetail.thread + "' vpos='" + vpos + "' mail='" + commentdata.comment + "' ticket='" + commentdata.ticket + "' user_id='" + broadcastDetail.user_id + "' postkey='" + postkey + "' premium='" + broadcastDetail.premium + "'>" + commentdata.comment + "</chat>\0");
+                viewer.write("<chat thread='" + broadcastDetail.thread + "' vpos='" + vpos + "' mail='" + commentdata.comment + "' ticket='" + commentdata.ticket + "' user_id='" + broadcastDetail.user_id + "' postkey='" + postkey + "' premium='" + broadcastDetail.premium + "'>" + validator.escape(commentdata.comment) + "</chat>\0");
             });
 
 

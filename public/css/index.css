@@ -1,0 +1,12 @@
+#owner_img img{
+    height: 40px;
+    width: 40px;
+}
+#owner_name h4{
+    font-size: 20px;
+}
+
+#broadcast_title h5{
+    font-size: 18px;
+    margin: 0 auto;
+}

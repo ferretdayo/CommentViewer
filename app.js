@@ -11,8 +11,7 @@ var routes = require('./routes/index');
 var login = require('./routes/login');
 
 var webApp = express();
-//HTTPヘッダのセキュリティ
-var helmet = require('helmet');
+
 // Electron
 const electron = require('electron');
 const app = electron.app;
@@ -33,7 +32,6 @@ webApp.use(express.static(path.join(__dirname, 'public')));
 webApp.use(cookieParser());
 webApp.use('/', login);
 webApp.use('/viewer', routes);
-webApp.use(helmet());
 
 // catch 404 and forward to error handler
 webApp.use(function(req, res, next) {

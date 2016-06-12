@@ -1,37 +1,41 @@
 extends layout
 
+block header
+    link(href="/css/index.css", rel="stylesheet")
+
 block content
-    div.container
-        //URL入力
-        div.row
-            form.col.s12.m12.l12(method="post", action="./viewer")
-                div.row
-                    div.col.s12.m10.l10
-                        input#url(type="text", placeholder='放送URL', name="url")
-                    div.col.s12.m2.l2
-                        input#submit.waves-effect.waves-light.btn(type='submit', value="接続")
-        div.row
-            div.col.s2.m2.l2
-                div#owner_img
-            div.col.s3.m3.l3
-                div#owner_name
-        div.row
-            div.col.s12.m12.l12
-                div#broadcast_title
-        div.row
-            div.col.s12.m10.l10
-                input#post_comment(type="text", placeholder="コメント", name="post_comment", onkeydown="submitComment();")
-            div.col.s12.m2.l2
-                button#comment_submit.waves-effect.waves-light.btn 送信
-        //コメント欄
-        div.row
-            div.col.s12.m12.l12
-                table
-                    thead(style="display:block")
-                        tr
-                            th(data-field='id', style="width:110px") UserID
-                            th(data-field='comment', style="width:450px") Comment
-                            th(data-field='premium', style="width:60px") Premium
-                    tbody#comment(style="height:350px;overflow-y:scroll;overflow-x:hidden;display:block")
+    div.content(style="height:100vh")
+        div.container
+            //URL入力
+            div.row(style="margin:0")
+                form.col.s12.m12.l12(method="post", action="./viewer", style="margin:0")
+                    div.row(style="margin:0")
+                        div.col.s12.m10.l10
+                            input#url(type="text", placeholder='放送URL', name="url")
+                        div.col.s12.m2.l2
+                            input#submit.waves-effect.waves-light.btn(type='submit', value="接続")
+            div.row(style="margin:0")
+                div.col.s2.m2.l2
+                    div#owner_img
+                div.col.s3.m3.l3
+                    div#owner_name
+            div.row(style="margin:0")
+                div.col.s12.m12.l12
+                    div#broadcast_title
+            div.row(style="margin:0")
+                div.col.s12.m10.l10
+                    input#post_comment(type="text", placeholder="コメント", name="post_comment", onkeydown="submitComment();")
+                div.col.s12.m2.l2
+                    button#comment_submit.waves-effect.waves-light.btn 送信
+            //コメント欄
+            div.row
+                div.col.s12.m12.l12
+                    table
+                        thead(style="display:block")
+                            tr
+                                th(data-field='id', style="width:110px") UserID
+                                th(data-field='comment', style="width:450px") Comment
+                                th(data-field='premium', style="width:60px") Premium
+                        tbody#comment(style="height:350px;overflow-y:scroll;overflow-x:hidden;display:block")
     script(type='text/javascript', src='/javascripts/comment.js')
     script(type='text/javascript', src='/javascripts/ux.js')

@@ -9,6 +9,10 @@ var parser = require('xml2js').parseString;
 var app = require('express')();
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
+
+//xss
+var validator = require('validator');
+
 var preViewer;
 /* GET home page. */
 router.get('/', function(req, res, next) {

@@ -5,7 +5,7 @@ block header
 
 block content
     div.content(style="height:100vh")
-        div.container
+        div.container#app_broadcastdetails
             //URL入力
             div.row(style="margin:0")
                 form.col.s12.m12.l12(method="post", action="./viewer", style="margin:0")
@@ -24,11 +24,11 @@ block content
                     div#broadcast_title
             div.row(style="margin:0")
                 div.col.s12.m10.l10
-                    input#post_comment(type="text", placeholder="コメント", name="post_comment", onkeydown="submitComment();")
+                    input#post_comment(type="text", placeholder="コメント", name="post_comment", v-on:keyup.enter="submitComment", onkeydown="submitComment();")
                 div.col.s12.m2.l2
                     button#comment_submit.waves-effect.waves-light.btn 送信
             //コメント欄
-            div.row
+            div.row#app_comment
                 div.col.s12.m12.l12
                     table
                         thead(style="display:block")
@@ -36,6 +36,12 @@ block content
                                 th(data-field='id', style="width:110px") UserID
                                 th(data-field='comment', style="width:450px") Comment
                                 th(data-field='premium', style="width:60px") Premium
-                        tbody#comment(style="height:350px;overflow-y:scroll;overflow-x:hidden;display:block")
+                        tbody(style="height:350px;overflow-y:scroll;overflow-x:hidden;display:block")
+                            tr(v-for="commentDetail in commentDetails")
+                                td  {{commentDetail.user_id}}
+                                td  {{commentDetail.comment}}
+                                td  {{commentDetail.premium}}
+    script(type='text/javascript', src='/javascripts/broadcastdetails_vue.js')
+    script(type='text/javascript', src='/javascripts/comment_vue.js')
     script(type='text/javascript', src='/javascripts/comment.js')
     script(type='text/javascript', src='/javascripts/ux.js')

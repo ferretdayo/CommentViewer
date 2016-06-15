@@ -31,3 +31,5 @@ npm-debug.log
 
 CommentViewerCsr.pem
 CommentViewerKey.pem
+
+release.js

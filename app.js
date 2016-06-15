@@ -88,11 +88,6 @@ app.on('ready', function() {
     mainWindow.on('closed', function() {
         mainWindow = null;
     });
-    mainWindow.webContents.executeJavaScript(`
-        var path = require('path');
-        module.paths.push(path.resolve('node_modules'));
-        module.paths.push(path.resolve('../node_modules'));
-    `);
     //mainWindow.webContents.openDevTools();
 });
 

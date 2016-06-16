@@ -1,5 +1,3 @@
-require('electron-debug')();
-
 var express = require('express');
 var path = require('path');
 var favicon = require('serve-favicon');
@@ -87,11 +85,10 @@ app.on('ready', function() {
     //mainWindow.loadURL('file://' + __dirname + '/views/index.html');
     mainWindow.loadURL('http://127.0.0.1:' + port);
     // ウィンドウが閉じられたらアプリも終了
-    mainWindow.webContents.openDevTools();
-
     mainWindow.on('closed', function() {
         mainWindow = null;
     });
+    //mainWindow.webContents.openDevTools();
 });
 
 module.exports = webApp;

@@ -5,7 +5,7 @@ block header
 
 block content
     div.content(style="height:100vh")
-        div.container#app_broadcastdetails
+        div.container#app
             //URL入力
             div.row(style="margin:0")
                 form.col.s12.m12.l12(method="post", action="./viewer", style="margin:0")
@@ -28,7 +28,7 @@ block content
                 div.col.s12.m2.l2
                     button#comment_submit.waves-effect.waves-light.btn 送信
             //コメント欄
-            div.row#app_comment
+            div.row
                 div.col.s12.m12.l12
                     table
                         thead(style="display:block")
@@ -42,7 +42,6 @@ block content
                                 td  {{commentDetail.user_id}}
                                 td  {{commentDetail.comment}}
                                 td  {{commentDetail.premium}}
-    script(type='text/javascript', src='/javascripts/broadcastdetails_vue.js')
-    script(type='text/javascript', src='/javascripts/comment_vue.js')
+    script(type='text/javascript', src='/javascripts/app_vue.js')
     script(type='text/javascript', src='/javascripts/comment.js')
     script(type='text/javascript', src='/javascripts/ux.js')

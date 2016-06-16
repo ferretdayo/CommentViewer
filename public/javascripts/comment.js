@@ -18,7 +18,7 @@ socket.on('comment data', function(msg){
     var commentData = dataAnalyze(msg);
     if(commentData != -1){
         //Vue.jsのコメントストア関数
-        app_comment.addComments(commentData);
+        app.addComments(commentData);
         //$('#comment').prepend($('<tr><td>' + commentData.user_id + '</td><td>' + commentData.comment + '</td><td>' + commentData.premium + '</td></tr>'));
     }
 });
@@ -40,9 +40,9 @@ $('#comment_submit').click(function(){
 //放送情報を表示する前に毎回行う初期化
 function broadcastTitleInit(){
     //#owner_imgにChildがあればChildを削除
-    app_broadcastdetails.removeImage();
-    app_broadcastdetails.removeOwnerName();
-    app_broadcastdetails.removeBroadcastTitle();
+    app.removeImage();
+    app.removeOwnerName();
+    app.removeBroadcastTitle();
     /*
     if($('#owner_img')[0]){
         $('#owner_img').empty();
@@ -59,11 +59,11 @@ function broadcastTitleInit(){
 //放送タイトルや放送者情報の表示
 function setBroadcastTitle(data){
     //各IDに対するHTMLのChildに情報をappend
-    app_broadcastdetails.showImage(data.owner_img);
+    app.showImage(data.owner_img);
     //$('#owner_img').append($('<img id="owner_i" src="' + data.owner_img + '">'));
-    app_broadcastdetails.showOwnerName(data.owner_name);
+    app.showOwnerName(data.owner_name);
     //$('#owner_name').append($('<h4>' + data.owner_name + '</h4>'));
-    app_broadcastdetails.showBroadcastTitle(data.title);
+    app.showBroadcastTitle(data.title);
     //$('#broadcast_title').append($('<h5>' + data.title + '</h5>'));
     postCommentDetail.no = data.comment_count;
 }

@@ -28,10 +28,13 @@ var app = new Vue({
         //コミュの放送タイトルの表示
         showBroadcastTitle: function(title){
             this.broadcast_title = title
+            this.$broadcast('broadcast-title-msg', this.broadcast_title);
+            /*
             var element = document.getElementById("broadcast_title")
             var title_el = document.createElement("h5")
             title_el.textContent = this.broadcast_title
             element.appendChild(title_el)
+            */
         },
         //コミュsサムネの非表示(削除)
         removeImage: function(){

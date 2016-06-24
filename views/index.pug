@@ -21,7 +21,7 @@ block content
                     div#owner_name
             div.row(style="margin:0")
                 div.col.s12.m12.l12
-                    div#broadcast_title
+                    broadcast-title#broadcast_title
             div.row(style="margin:0")
                 div.col.s12.m10.l10
                     input#post_comment(type="text", placeholder="コメント", name="post_comment", v-on:keyup.enter="submitComment", onkeydown="submitComment();")
@@ -42,6 +42,7 @@ block content
                                 td  {{commentDetail.user_id}}
                                 td  {{commentDetail.comment}}
                                 td  {{commentDetail.premium}}
+    script(type='text/javascript', src='/javascripts/broadcast_vue.js')
     script(type='text/javascript', src='/javascripts/app_vue.js')
     script(type='text/javascript', src='/javascripts/comment.js')
     script(type='text/javascript', src='/javascripts/ux.js')

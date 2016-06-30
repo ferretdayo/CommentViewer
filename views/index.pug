@@ -16,9 +16,9 @@ block content
                             input#submit.waves-effect.waves-light.btn(type='submit', value="接続")
             div.row(style="margin:0")
                 div.col.s2.m2.l2
-                    div#owner_img
+                    broadcast-img#owner_img
                 div.col.s3.m3.l3
-                    div#owner_name
+                    broadcast-name#owner_name
             div.row(style="margin:0")
                 div.col.s12.m12.l12
                     broadcast-title#broadcast_title
@@ -42,7 +42,9 @@ block content
                                 td  {{commentDetail.user_id}}
                                 td  {{commentDetail.comment}}
                                 td  {{commentDetail.premium}}
-    script(type='text/javascript', src='/javascripts/broadcast_vue.js')
+    script(type='text/javascript', src='/javascripts/broadcast_title.js')
+    script(type='text/javascript', src='/javascripts/broadcast_name.js')
+    script(type='text/javascript', src='/javascripts/broadcast_img.js')
     script(type='text/javascript', src='/javascripts/app_vue.js')
     script(type='text/javascript', src='/javascripts/comment.js')
     script(type='text/javascript', src='/javascripts/ux.js')

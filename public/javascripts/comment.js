@@ -6,8 +6,6 @@ socket.connect();
 
 //放送タイトルや放送者情報を表示
 socket.on('broadcast data', function(data){
-    //放送タイトルや放送者の情報の初期化
-    broadcastTitleInit();
     //放送タイトルや放送者の情報をコメビュに表示
     setBroadcastTitle(data);
 });
@@ -37,24 +35,6 @@ $('#comment_submit').click(function(){
     $('#post_comment').val("");
     socket.emit('post comment', postCommentDetail);
 });
-//放送情報を表示する前に毎回行う初期化
-function broadcastTitleInit(){
-    //#owner_imgにChildがあればChildを削除
-    app.removeImage();
-    app.removeOwnerName();
-    app.removeBroadcastTitle();
-    /*
-    if($('#owner_img')[0]){
-        $('#owner_img').empty();
-    }
-    if($('#owner_name')[0]){
-        $('#owner_name').empty();
-    }
-    if($('#broadcast_title')[0]){
-        $('#broadcast_title').empty();
-    }
-    */
-}
 
 //放送タイトルや放送者情報の表示
 function setBroadcastTitle(data){

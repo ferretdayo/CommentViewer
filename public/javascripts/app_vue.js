@@ -37,9 +37,11 @@ var app = new Vue({
             this.postCommentData.server_time = server_time
         },
         //コメントの投稿
-        postComment: function(comment){
-            this.postCommentData.comment = comment
+        postComment: function(event){
+            //コメント投稿の発火
             socket.emit('post comment', this.postCommentData)
+            //初期化
+            this.postCommentData.comment = ""
         }
     }
 })
@@ -69,13 +71,6 @@ socket.on('disconnect', function(){
 
 $("#submit").click(function(){
     socket.emit('disconnect broadcast');
-});
-
-//コメントの投稿
-$('#comment_submit').click(function(){
-    //app.postCommentDetail.comment = $('#post_comment').val();
-    app.postComment($('#post_comment').val());
-    $('#post_comment').val("");
 });
 
 //放送タイトルや放送者情報の表示

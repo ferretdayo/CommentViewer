@@ -28,9 +28,9 @@ block content
             div.row(style="margin:0")
                 div.col.s12.m10.l10
                     //コメントの投稿欄
-                    input#post_comment(type="text", placeholder="コメント", name="post_comment", v-on:keyup.enter="", onkeydown="submitComment();")
+                    input#post_comment(type="text", placeholder="コメント", name="post_comment", v-model="postCommentData.comment", v-on:keyup.enter="postComment")
                 div.col.s12.m2.l2
-                    button#comment_submit.waves-effect.waves-light.btn 送信
+                    button#comment_submit.waves-effect.waves-light.btn(v-on:click="postComment") 送信
             //コメント欄
             div.row
                 div.col.s12.m12.l12
@@ -51,4 +51,3 @@ block content
     script(type='text/javascript', src='/javascripts/components/broadcast_img.js')
     script(type='text/javascript', src='/javascripts/app_vue.js')
     script(type='text/javascript', src='/javascripts/comment_analyze.js')
-    script(type='text/javascript', src='/javascripts/ux.js')

@@ -5,7 +5,7 @@ block header
 
 block content
     div.content(style="height:100vh")
-        div.container
+        div.container#app
             //URL入力
             div.row(style="margin:0")
                 form.col.s12.m12.l12(method="post", action="./viewer", style="margin:0")
@@ -16,17 +16,21 @@ block content
                             input#submit.waves-effect.waves-light.btn(type='submit', value="接続")
             div.row(style="margin:0")
                 div.col.s2.m2.l2
-                    div#owner_img
+                    //放送コミュのサムネ表示
+                    broadcast-img#owner_img
                 div.col.s3.m3.l3
-                    div#owner_name
+                    //放送者の名前表示
+                    broadcast-name#owner_name
             div.row(style="margin:0")
                 div.col.s12.m12.l12
-                    div#broadcast_title
+                    //放送タイトルの表示
+                    broadcast-title#broadcast_title
             div.row(style="margin:0")
                 div.col.s12.m10.l10
-                    input#post_comment(type="text", placeholder="コメント", name="post_comment", onkeydown="submitComment();")
+                    //コメントの投稿欄
+                    input#post_comment(type="text", placeholder="コメント", name="post_comment", v-model="postCommentData.comment", v-on:keyup.enter="postComment")
                 div.col.s12.m2.l2
-                    button#comment_submit.waves-effect.waves-light.btn 送信
+                    button#comment_submit.waves-effect.waves-light.btn(v-on:click="postComment") 送信
             //コメント欄
             div.row
                 div.col.s12.m12.l12
@@ -36,6 +40,14 @@ block content
                                 th(data-field='id', style="width:110px") UserID
                                 th(data-field='comment', style="width:450px") Comment
                                 th(data-field='premium', style="width:60px") Premium
-                        tbody#comment(style="height:350px;overflow-y:scroll;overflow-x:hidden;display:block")
-    script(type='text/javascript', src='/javascripts/comment.js')
-    script(type='text/javascript', src='/javascripts/ux.js')
+                        tbody(style="height:350px;overflow-y:scroll;overflow-x:hidden;display:block")
+                            //track-byに後で変更（変更部を更新にし，再描画を削減するため）
+                            tr(v-for="commentDetail in commentDetails")
+                                td  {{commentDetail.user_id}}
+                                td  {{commentDetail.comment}}
+                                td  {{commentDetail.premium}}
+    script(type='text/javascript', src='/javascripts/components/broadcast_title.js')
+    script(type='text/javascript', src='/javascripts/components/broadcast_name.js')
+    script(type='text/javascript', src='/javascripts/components/broadcast_img.js')
+    script(type='text/javascript', src='/javascripts/app_vue.js')
+    script(type='text/javascript', src='/javascripts/comment_analyze.js')

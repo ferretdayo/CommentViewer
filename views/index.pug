@@ -16,15 +16,19 @@ block content
                             input#submit.waves-effect.waves-light.btn(type='submit', value="接続")
             div.row(style="margin:0")
                 div.col.s2.m2.l2
+                    //放送コミュのサムネ表示
                     broadcast-img#owner_img
                 div.col.s3.m3.l3
+                    //放送者の名前表示
                     broadcast-name#owner_name
             div.row(style="margin:0")
                 div.col.s12.m12.l12
+                    //放送タイトルの表示
                     broadcast-title#broadcast_title
             div.row(style="margin:0")
                 div.col.s12.m10.l10
-                    input#post_comment(type="text", placeholder="コメント", name="post_comment", v-on:keyup.enter="submitComment", onkeydown="submitComment();")
+                    //コメントの投稿欄
+                    input#post_comment(type="text", placeholder="コメント", name="post_comment", v-on:keyup.enter="", onkeydown="submitComment();")
                 div.col.s12.m2.l2
                     button#comment_submit.waves-effect.waves-light.btn 送信
             //コメント欄
@@ -46,5 +50,5 @@ block content
     script(type='text/javascript', src='/javascripts/components/broadcast_name.js')
     script(type='text/javascript', src='/javascripts/components/broadcast_img.js')
     script(type='text/javascript', src='/javascripts/app_vue.js')
-    script(type='text/javascript', src='/javascripts/comment.js')
+    script(type='text/javascript', src='/javascripts/commentAnalyze.js')
     script(type='text/javascript', src='/javascripts/ux.js')

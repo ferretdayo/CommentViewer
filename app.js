@@ -5,8 +5,8 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 
+//　router
 var routes = require('./routes/index');
-var login = require('./routes/login');
 
 var webApp = express();
 
@@ -14,9 +14,66 @@ var webApp = express();
 //var helmet = require('helmet');
 
 // Electron
-const electron = require('electron');
-const app = electron.app;
-const BrowserWindow = electron.BrowserWindow;
+const {app, Menu, BrowserWindow} = require('electron');
+
+// ElectronのMenuの設定
+const templateMenu = [
+    {
+        label: 'Edit',
+        submenu: [
+            {
+                role: 'undo',
+            },
+            {
+                role: 'redo',
+            },
+        ]
+    },
+    {
+        label: 'View',
+        submenu: [
+            {
+                label: 'Reload',
+                accelerator: 'CmdOrCtrl+R',
+                click(item, focusedWindow){
+                    if(focusedWindow) focusedWindow.reload()
+                },
+            },
+            {
+                type: 'separator',
+            },
+            {
+                role: 'resetzoom',
+            },
+            {
+                role: 'zoomin',
+            },
+            {
+                role: 'zoomout',
+            },
+            {
+                type: 'separator',
+            },
+            {
+                role: 'togglefullscreen',
+            }
+        ]
+    },
+    {
+        label: 'Setting',
+        submenu: [
+            {
+                label: 'Login',
+                click(item, focusedWindow){
+                    //if(focusedWindow) focusedWindow.webContents.addEventListener('login');
+                }
+            }
+        ]
+    }
+];
+
+const menu = Menu.buildFromTemplate(templateMenu);
+Menu.setApplicationMenu(menu);
 
 // view engine setup
 webApp.set('views', path.join(__dirname, 'views'));
@@ -31,8 +88,7 @@ webApp.use(cookieParser());
 webApp.use(express.static(path.join(__dirname, 'public')));
 
 webApp.use(cookieParser());
-webApp.use('/', login);
-webApp.use('/viewer', routes);
+webApp.use('/', routes);
 
 //webApp.use(helmet());
 
@@ -89,6 +145,7 @@ app.on('ready', function() {
     mainWindow = new BrowserWindow({width: 800, height: 600, 'node-integration': false});
     //mainWindow.loadURL('file://' + __dirname + '/views/index.html');
     mainWindow.loadURL('http://127.0.0.1:' + port);
+
     // ウィンドウが閉じられたらアプリも終了
     mainWindow.on('closed', function() {
         mainWindow = null;

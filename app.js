@@ -7,6 +7,7 @@ var bodyParser = require('body-parser');
 
 //　router
 var routes = require('./routes/index');
+var login = require('./routes/login');
 
 var webApp = express();
 
@@ -88,7 +89,8 @@ webApp.use(cookieParser());
 webApp.use(express.static(path.join(__dirname, 'public')));
 
 webApp.use(cookieParser());
-webApp.use('/', routes);
+webApp.use('/', login);
+webApp.use('/viewer', routes);
 
 //webApp.use(helmet());
 

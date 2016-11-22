@@ -11,6 +11,23 @@ var login = require('./routes/login');
 
 var webApp = express();
 
+// Port
+const port = 3000;
+
+// メインウィンドウはGCされないようにグローバル宣言
+var mainWindow = null;
+
+const https = require('https');
+const fs = require('fs');
+
+// 証明書のファイルを指定します
+var options = {
+    key: fs.readFileSync('./key/server_key.pem'),
+    cert: fs.readFileSync('./key/cert.pem')
+};
+
+https.createServer(options, webApp).listen(port);
+
 //HTTPヘッダのセキュリティ
 //var helmet = require('helmet');
 
@@ -44,33 +61,10 @@ const templateMenu = [
                 type: 'separator',
             },
             {
-                role: 'resetzoom',
-            },
-            {
-                role: 'zoomin',
-            },
-            {
-                role: 'zoomout',
-            },
-            {
-                type: 'separator',
-            },
-            {
                 role: 'togglefullscreen',
             }
         ]
     },
-    {
-        label: 'Setting',
-        submenu: [
-            {
-                label: 'Login',
-                click(item, focusedWindow){
-                    //if(focusedWindow) focusedWindow.webContents.addEventListener('login');
-                }
-            }
-        ]
-    }
 ];
 
 const menu = Menu.buildFromTemplate(templateMenu);
@@ -125,14 +119,9 @@ webApp.use(function(err, req, res, next) {
   });
 });
 
-const port = 3000;
-
-webApp.listen(port, function() {
-    console.log('App server started : http://localhost:' + port);
-});
-
-// メインウィンドウはGCされないようにグローバル宣言
-var mainWindow = null;
+// webApp.listen(port, function() {
+//     console.log('App server started : https://localhost:' + port);
+// });
 
 // 全てのウィンドウが閉じたら終了
 app.on('window-all-closed', function() {
@@ -141,12 +130,23 @@ app.on('window-all-closed', function() {
   }
 });
 
+app.on('certificate-error', function(event, webContents, url, error, certificate, callback) {
+  event.preventDefault();
+  callback(true);
+});
+
 // Electronの初期化完了後に実行
 app.on('ready', function() {
     // メイン画面の表示。ウィンドウの幅、高さを指定できる
-    mainWindow = new BrowserWindow({width: 800, height: 600, 'node-integration': false});
+    mainWindow = new BrowserWindow({
+        width: 800,
+        height: 600,
+        webPreferences: {
+            nodeIntegration: false
+        }
+    });
     //mainWindow.loadURL('file://' + __dirname + '/views/index.html');
-    mainWindow.loadURL('http://127.0.0.1:' + port);
+    mainWindow.loadURL('https://localhost:' + port);
 
     // ウィンドウが閉じられたらアプリも終了
     mainWindow.on('closed', function() {

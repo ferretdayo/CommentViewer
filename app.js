@@ -20,12 +20,13 @@ var mainWindow = null;
 const https = require('https');
 const fs = require('fs');
 
-// 証明書のファイルを指定します
+// 証明書のファイルを指定
 var options = {
     key: fs.readFileSync('./key/server_key.pem'),
     cert: fs.readFileSync('./key/cert.pem')
 };
 
+// httpsサーバの立ち上げ
 https.createServer(options, webApp).listen(port);
 
 //HTTPヘッダのセキュリティ
@@ -118,10 +119,6 @@ webApp.use(function(err, req, res, next) {
     error: {}
   });
 });
-
-// webApp.listen(port, function() {
-//     console.log('App server started : https://localhost:' + port);
-// });
 
 // 全てのウィンドウが閉じたら終了
 app.on('window-all-closed', function() {

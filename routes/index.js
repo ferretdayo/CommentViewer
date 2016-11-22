@@ -21,11 +21,19 @@ var io = require('socket.io')(https);
 var preViewer;
 /* GET home page. */
 router.get('/', function(req, res, next) {
-    res.render('index', { title: 'NicoNicoCommentViewer' });
+    if(req.cookies.user_session !== undefined){
+        res.render('index', { title: 'NicoNicoCommentViewer' });
+    } else {
+        res.render('login', { title: 'NicoNicoCommentViewer' });
+    }
 });
+
+/* 放送に接続 */
 router.post('/', function(req, res, next){
+    // 接続先のURLを取得
     var broadcastUrl = req.body.url;
-    console.log(broadcastUrl);
+
+    // 放送のlvをURLから取得
     var lv = broadcastUrl.split("/");
     lv = lv[lv.length-1].split("?")[0];
 

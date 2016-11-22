@@ -46,7 +46,7 @@ var app = new Vue({
     }
 })
 
-var socket = io.connect('http://localhost:3001');
+var socket = io.connect('https://localhost:3001');
 socket.connect();
 
 //放送タイトルや放送者情報を表示

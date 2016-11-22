@@ -120,9 +120,6 @@ module.exports = {
                 //コメントの投稿
                 viewer.write("<chat thread='" + broadcastDetail.thread + "' vpos='" + vpos + "' mail='" + commentdata.comment + "' ticket='" + commentdata.ticket + "' user_id='" + broadcastDetail.user_id + "' postkey='" + postkey + "' premium='" + broadcastDetail.premium + "'>" + validator.escape(commentdata.comment) + "</chat>\0");
             });
-
-
         });
-
     },
 }

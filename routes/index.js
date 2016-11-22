@@ -5,10 +5,18 @@ var net = require('net');
 var nicolive = require('../nicolive.js');
 var parser = require('xml2js').parseString;
 
+const fs = require('fs');
+
+// 証明書のファイルを指定します
+var options = {
+    key: fs.readFileSync('./key/server_key.pem'),
+    cert: fs.readFileSync('./key/cert.pem')
+};
+
 //Socket.io用
 var app = require('express')();
-var http = require('http').Server(app);
-var io = require('socket.io')(http);
+var https = require('https').createServer(options, app);
+var io = require('socket.io')(https);
 
 var preViewer;
 /* GET home page. */
@@ -73,7 +81,7 @@ router.post('/', function(req, res, next){
 //});
 
 //Socket.io用サーバ
-http.listen(3001, function(){
+https.listen(3001, function(){
   console.log('listening on *:3000');
 });
 

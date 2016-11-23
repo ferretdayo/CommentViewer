@@ -1,5 +1,5 @@
 var BroadcastName = Vue.extend({
-    template: '<h4>{{broadcast_name}}</h4>',
+    template: '<h6>{{broadcast_name}}</h6>',
     data: function (){
         return {
             broadcast_name: ''

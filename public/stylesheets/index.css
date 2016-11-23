@@ -1,3 +1,13 @@
+/*thead{
+    display: block;
+}
+tbody{
+    height: 350px;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    display: block;
+}*/
+
 #owner_img img{
     height: 40px;
     width: 40px;

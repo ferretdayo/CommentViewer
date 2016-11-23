@@ -1,7 +1,8 @@
 extends layout
 
 block header
-    link(href="/css/index.css", rel="stylesheet")
+    link(href="/stylesheets/index.css", rel="stylesheet")
+    script(type='text/javascript', src='/javascripts/const.js')
 
 block content
     div.content(style="height:100vh")
@@ -35,17 +36,17 @@ block content
             div.row
                 div.col.s12.m12.l12
                     table
-                        thead(style="display:block")
+                        thead
                             tr
                                 th(data-field='id', style="width:110px") UserID
                                 th(data-field='comment', style="width:450px") Comment
                                 th(data-field='premium', style="width:60px") Premium
-                        tbody(style="height:350px;overflow-y:scroll;overflow-x:hidden;display:block")
+                        tbody
                             //track-byに後で変更（変更部を更新にし，再描画を削減するため）
                             tr(v-for="commentDetail in commentDetails")
                                 td  {{commentDetail.user_id}}
                                 td  {{commentDetail.comment}}
-                                td  {{commentDetail.premium}}
+                                td  {{commentDetail.type}}
     script(type='text/javascript', src='/javascripts/components/broadcast_title.js')
     script(type='text/javascript', src='/javascripts/components/broadcast_name.js')
     script(type='text/javascript', src='/javascripts/components/broadcast_img.js')

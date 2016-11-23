@@ -4,23 +4,28 @@ function dataAnalyze(data){
     //コメント情報の場合
     if(data.hasOwnProperty('chat')){
         console.table(data.chat);
-        //ユーザIDの取得
-        commentData.user_id = data.chat.$.user_id;
-        //ユーザの種別
+        // ユーザIDの取得
+        // ユーザIDから以下を判定
+        // 1. 184じゃない人, 2. 184, 3. クルーズ
+        commentData.user_id = getUserRole(data.chat.$.user_id, data.chat.$.premium);
+        // プレミア情報よりユーザの種別
         if(data.chat.$.hasOwnProperty('premium')){
             switch(data.chat.$.premium){
-                case "1":
-                    commentData.premium = "プレミア";
+                // プレミアの場合
+                case ACCOUNT_TYPE.PREMIUM:
+                    commentData.type = ACCOUNT_TYPE_NAME.PREMIUM;
                     break;
-                case "3":
-                    commentData.premium = "運営";
+                // 運営の場合
+                case ACCOUNT_TYPE.ADMIN:
+                    commentData.type = ACCOUNT_TYPE_NAME.ADMIN;
                     break;
                 default:
                     console.log(data.chat.$.premium);
                     break;
             }
+        // 一般の場合
         }else{
-            commentData.premium = "一般";
+            commentData.type = ACCOUNT_TYPE_NAME.NORMAL;
         }
         //コメントの取得
         //TODO /hbから始まるときは表示しないようにする
@@ -43,4 +48,24 @@ function dataAnalyze(data){
 function createDateJST(timestamp){
     var d = new Date(parseInt(timestamp)*1000);
     return d.getFullYear() + "/" + d.getMonth() + "/" + d.getDate() + " " + d.getHours() + ":" + d.getMinutes() + ":" + d.getSeconds();
+}
+
+// UserIDとプレミアかどうかよりユーザの種別(184, !184, クルーズ, 運営)を分けてユーザ名またはIDを返す
+function getUserRole(user_id, premium){
+
+    // 運営の場合はプレミアの情報('3')で分かるので、そこより判別
+    if(premium !== undefined && premium === ACCOUNT_TYPE.ADMIN){
+        return ADMIN_USER;
+    }
+    // 184じゃない場合
+    if(user_id.match(/^[0-9]*$/) !== null){
+        if(user_id === CRUISE_ID){
+            return CRUISE_USER;
+        } else {
+            return user_id;
+        }
+    // 184の場合
+    } else {
+        return PRIVATE_USER;
+    }
 }

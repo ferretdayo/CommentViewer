@@ -1,12 +1,21 @@
-/*thead{
+thead{
     display: block;
 }
 tbody{
     height: 350px;
     overflow-y: scroll;
-    overflow-x: hidden;
     display: block;
-}*/
+}
+
+tr > .user-id{
+    width: 20%;
+}
+tr > .user-comment{
+    width: 70%;
+}
+tr > .user-type{
+    width: 10%;
+}
 
 #owner_img img{
     height: 40px;

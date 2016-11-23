@@ -38,15 +38,15 @@ block content
                     table
                         thead
                             tr
-                                th(data-field='id', style="width:110px") UserID
-                                th(data-field='comment', style="width:450px") Comment
-                                th(data-field='premium', style="width:60px") Premium
+                                th.user-id(data-field='id') UserID
+                                th.user-comment(data-field='comment') Comment
+                                th.user-type(data-field='premium') Premium
                         tbody
                             //track-byに後で変更（変更部を更新にし，再描画を削減するため）
                             tr(v-for="commentDetail in commentDetails")
-                                td  {{commentDetail.user_id}}
-                                td  {{commentDetail.comment}}
-                                td  {{commentDetail.type}}
+                                td.user-id  {{commentDetail.user_id}}
+                                td.user-comment  {{commentDetail.comment}}
+                                td.user-type  {{commentDetail.type}}
     script(type='text/javascript', src='/javascripts/components/broadcast_title.js')
     script(type='text/javascript', src='/javascripts/components/broadcast_name.js')
     script(type='text/javascript', src='/javascripts/components/broadcast_img.js')

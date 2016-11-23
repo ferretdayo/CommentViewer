@@ -2,11 +2,18 @@ thead{
     display: block;
 }
 tbody{
-    height: 350px;
+    height: calc(100vh - 280px);
     overflow-y: scroll;
     display: block;
 }
 
+th{
+    padding: 0px !important;
+}
+
+tbody > tr > td{
+    padding: 10px 5px !important;
+}
 tr > .user-id{
     width: 20%;
 }
